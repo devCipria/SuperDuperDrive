@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping
@@ -24,7 +25,7 @@ public class CredentialController {
     }
 
     @PostMapping("/credentials")
-    public String createOrEditCredential(@ModelAttribute("credential") Credential credential, Authentication auth, Model model) {
+    public String createOrEditCredential(@ModelAttribute("credential") Credential credential, Authentication auth, RedirectAttributes redirectAttributes) {
         User user = userService.getUser(auth.getName());
         Integer userId = user.getUserId();
         credential.setUserId(userId);
@@ -32,20 +33,22 @@ public class CredentialController {
 
         if (credential.getCredentialId() == null) {
             this.credentialService.createCredential(credential);
-            model.addAttribute("credentials", this.credentialService.displayCredentials(userId));
-            model.addAttribute("successMessage", "Your credential has been successfully added!");
+            redirectAttributes.addAttribute("success", true);
+            redirectAttributes.addAttribute("message", "Your credential has been successfully added!");
         } else {
             this.credentialService.updateCredential(credential);
-            model.addAttribute("successMessage", "Your credential has been successfully updated!");
+            redirectAttributes.addAttribute("success", true);
+            redirectAttributes.addAttribute("message", "Your credential has been successfully updated!");
         }
-        return "result";
+        return "redirect:/home";
     }
 
     @GetMapping("/delete-credential/{credentialId}")
-    public String deleteCredential(@PathVariable("credentialId") Integer credentialId, Authentication auth, Model model) {
+    public String deleteCredential(@PathVariable("credentialId") Integer credentialId, Authentication auth, RedirectAttributes redirectAttributes) {
         Integer userId = userService.getUser(auth.getName()).getUserId();
         credentialService.deleteCredential(credentialId, userId);
-        model.addAttribute("successMessage", "Your credential has been successfully deleted!");
-        return "result";
+        redirectAttributes.addAttribute("success", true);
+        redirectAttributes.addAttribute("message", "Your credential has been successfully deleted!");
+        return "redirect:/home";
     }
 }
