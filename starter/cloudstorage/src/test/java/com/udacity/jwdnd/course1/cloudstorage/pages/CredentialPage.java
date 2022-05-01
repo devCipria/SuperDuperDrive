@@ -1,5 +1,6 @@
 package com.udacity.jwdnd.course1.cloudstorage.pages;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -42,34 +43,57 @@ public class CredentialPage {
         PageFactory.initElements(driver, this);
     }
 
-    public void clickCredentials(){
-        this.navCredential.click();
+    public void clickCredentialsTab(){
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.elementToBeClickable(navCredential));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", navCredential);
     }
 
+    // https://knowledge.udacity.com/questions/427941
     public void addCredential(String url, String username, String password){
-        WebDriverWait wait = new WebDriverWait(driver, 2);
-        wait.until(ExpectedConditions.elementToBeClickable(addCredentialButton)).click();
-        wait.until(ExpectedConditions.elementToBeClickable(credentialUrl)).sendKeys(url);
-        wait.until(ExpectedConditions.elementToBeClickable(credentialUsername)).sendKeys(username);
-        wait.until(ExpectedConditions.elementToBeClickable(credentialPassword)).sendKeys(password);
-        wait.until(ExpectedConditions.elementToBeClickable(saveCredentialButton)).click();
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+
+        wait.until(ExpectedConditions.elementToBeClickable(addCredentialButton));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", addCredentialButton);
+
+        wait.until(ExpectedConditions.elementToBeClickable(credentialUrl));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].value='" + url + "';", this.credentialUrl);
+
+        wait.until(ExpectedConditions.elementToBeClickable(credentialUsername));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].value='" + username + "';", this.credentialUsername);
+
+        wait.until(ExpectedConditions.elementToBeClickable(credentialPassword));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].value='" + password + "';", this.credentialPassword);
+
+        wait.until(ExpectedConditions.elementToBeClickable(saveCredentialButton));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", saveCredentialButton);
     }
 
+    // https://knowledge.udacity.com/questions/427941
     public void editCredential(String newUrl, String newUsername, String newPassword){
-        WebDriverWait wait = new WebDriverWait(driver, 2);
-        wait.until(ExpectedConditions.elementToBeClickable(editCredentialButton)).click();
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+
+        wait.until(ExpectedConditions.elementToBeClickable(editCredentialButton));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", editCredentialButton);
+
         wait.until(ExpectedConditions.elementToBeClickable(credentialUrl)).clear();
-        wait.until(ExpectedConditions.elementToBeClickable(credentialUrl)).sendKeys(newUrl);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].value='" + newUrl + "';", this.credentialUrl);
+
         wait.until(ExpectedConditions.elementToBeClickable(credentialUsername)).clear();
-        wait.until(ExpectedConditions.elementToBeClickable(credentialUsername)).sendKeys(newUsername);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].value='" + newUsername + "';", this.credentialUsername);
+
         wait.until(ExpectedConditions.elementToBeClickable(credentialPassword)).clear();
-        wait.until(ExpectedConditions.elementToBeClickable(credentialPassword)).sendKeys(newPassword);
-        wait.until(ExpectedConditions.elementToBeClickable(saveCredentialButton)).click();
+        ((JavascriptExecutor) driver).executeScript("arguments[0].value='" + newPassword + "';", this.credentialPassword);
+
+        wait.until(ExpectedConditions.elementToBeClickable(saveCredentialButton));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", saveCredentialButton);
     }
 
+    // https://knowledge.udacity.com/questions/427941
     public void deleteCredential(){
-        WebDriverWait wait = new WebDriverWait(driver, 2);
-        wait.until(ExpectedConditions.elementToBeClickable(deleteCredential)).click();
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.elementToBeClickable(deleteCredential));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", deleteCredential);
     }
 
     public boolean getSuccessMessage() {

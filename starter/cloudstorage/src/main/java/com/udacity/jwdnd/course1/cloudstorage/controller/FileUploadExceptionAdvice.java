@@ -12,7 +12,7 @@ public class FileUploadExceptionAdvice {
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public String handleMaxSizeException(RedirectAttributes redirectAttributes) {
         redirectAttributes.addAttribute("error", true);
-        redirectAttributes.addAttribute("message", "File size exceeds the limit of 1MB!");
+        redirectAttributes.addAttribute("message", "File size exceeds the limit of 5MB!");
         return "redirect:/home";
     }
 }

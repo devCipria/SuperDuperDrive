@@ -1,5 +1,6 @@
 package com.udacity.jwdnd.course1.cloudstorage.pages;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -40,31 +41,50 @@ public class NotePage {
     }
 
     public void clickNotesTab() {
-        this.navNote.click();
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.elementToBeClickable(navNote));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", navNote);
     }
 
+    // https://knowledge.udacity.com/questions/427941
     public void addNote(String title, String description) {
-        WebDriverWait wait = new WebDriverWait(driver, 2);
-        wait.until(ExpectedConditions.elementToBeClickable(addNoteButton)).click();
-        wait.until(ExpectedConditions.elementToBeClickable(noteTitle)).sendKeys(title);
-        wait.until(ExpectedConditions.elementToBeClickable(noteDescription)).sendKeys(description);
-        wait.until(ExpectedConditions.elementToBeClickable(saveNoteButton)).click();
+        WebDriverWait wait = new WebDriverWait(driver, 10);
 
+        wait.until(ExpectedConditions.elementToBeClickable(addNoteButton));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", addNoteButton);
+
+        wait.until(ExpectedConditions.elementToBeClickable(noteTitle));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].value='" + title + "';", this.noteTitle);
+
+        wait.until(ExpectedConditions.elementToBeClickable(noteDescription));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].value='" + description + "';", this.noteDescription);
+
+        wait.until(ExpectedConditions.elementToBeClickable(saveNoteButton));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", saveNoteButton);
     }
 
+    // https://knowledge.udacity.com/questions/427941
     public void editNote(String titleEdit, String descriptionEdit){
-        WebDriverWait wait = new WebDriverWait(driver, 2);
-        wait.until(ExpectedConditions.elementToBeClickable(editNoteButton)).click();
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+
+        wait.until(ExpectedConditions.elementToBeClickable(editNoteButton));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", editNoteButton);
+
         wait.until(ExpectedConditions.elementToBeClickable(noteTitle)).clear();
-        wait.until(ExpectedConditions.elementToBeClickable(noteTitle)).sendKeys(titleEdit);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].value='" + titleEdit + "';", this.noteTitle);
+
         wait.until(ExpectedConditions.elementToBeClickable(noteDescription)).clear();
-        wait.until(ExpectedConditions.elementToBeClickable(noteDescription)).sendKeys(descriptionEdit);
-        wait.until(ExpectedConditions.elementToBeClickable(saveNoteButton)).click();
+        ((JavascriptExecutor) driver).executeScript("arguments[0].value='" + descriptionEdit + "';", this.noteDescription);
+
+        wait.until(ExpectedConditions.elementToBeClickable(saveNoteButton));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", saveNoteButton);
     }
 
+    // https://knowledge.udacity.com/questions/427941
     public void deleteNote(){
-        WebDriverWait wait = new WebDriverWait(driver, 2);
-        wait.until(ExpectedConditions.elementToBeClickable(deleteNoteButton)).click();
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.elementToBeClickable(deleteNoteButton));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", deleteNoteButton);
     }
 
     public boolean getSuccessMessage2() {
